@@ -1,3 +1,4 @@
+package APIUtils;
 
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
@@ -7,24 +8,19 @@ import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 
-public class ApiUtils {
-
-
+public class APIUtils {
 
     public static String getToken(String variant){
 
-        HashMap<String,String>requestParameters=new HashMap<>();
+        HashMap<String,String> requestParameters=new HashMap<>();
         requestParameters.put("variant",variant);
 
-        Response  response=
+        Response response=
                 given().params(requestParameters).
-                    when().post(ApiEndPoints.getTokenPoint).
-                            then().statusCode(HttpStatus.SC_OK).extract().response();
-
+                        when().post(APIEndPoints.GET_TOKEN_POINT).
+                        then().statusCode(HttpStatus.SC_OK).extract().response();
         return response.body().asString();
     }
-
-
 
     public static JSONArray getTestsListJsonFormat(String projectId){
 
@@ -32,12 +28,11 @@ public class ApiUtils {
         requestParameters.put("projectId",projectId);
         Response  response=
                 given().params(requestParameters).
-                        when().post(ApiEndPoints.getListTestsJson).
+                        when().post(APIEndPoints.GET_LIST_TESTS_JSON_POINT).
                         then().statusCode(HttpStatus.SC_OK).extract().response();
 
-        System.out.println("respponse"+response.body().asString());
         return new JSONArray(response.body().asString());
-      }
+    }
 
 
 

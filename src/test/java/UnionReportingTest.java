@@ -1,40 +1,46 @@
+import APIUtils.APIUtils;
 import DataBaseUtils.DataBaseRequest;
-import PagesAndForm.*;
+import PagesForms.AddNewProjectForm;
+import PagesForms.ProjectPage;
+import PagesForms.ProjectsPage;
+import PagesForms.TestPage;
+import Steps.BrowserMethods;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
-import aquality.selenium.elements.actions.JsActions;
 import io.restassured.RestAssured;
 import org.json.JSONArray;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
+import java.util.List;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-import static PagesAndForm.TestPage.compareImgs;
-import static PagesAndForm.TestPage.saveImgFromBrowserPage;
-import static Steps.Steps.compareTestsDataName;
+import static Steps.BrowserMethods.saveImgFromBrowserPage;
+import static Steps.CompareFiles.compareFiles;
+import static Steps.CompareTestsName.compareTestsName;
+import static Steps.Utils.checkSortingDate;
+import static Steps.Utils.converteDataFileToProjectLogFormat;
 
 public class UnionReportingTest {
 
 
+
     @Test
-    public static void unionReportingTest() throws IOException, SQLException, ClassNotFoundException, AWTException {
+    public static void unionReportingTest() throws SQLException, IOException, ClassNotFoundException, AWTException {
 
         ISettingsFile configFile=new JsonSettingsFile("config.json");
         ISettingsFile testDataFile=new JsonSettingsFile("testData.json");
+
         //step1
         RestAssured.baseURI=configFile.getValue("/baseApiUrl").toString();
-        String token=ApiUtils.getToken("1");
+        String token= APIUtils.getToken("1");
         Assert.assertNotNull(token,"Token isn't generated!");
+
         //step2
         Browser browser=AqualityServices.getBrowser();
         browser.maximize();
@@ -45,100 +51,87 @@ public class UnionReportingTest {
 
         ProjectsPage projectsPage=new ProjectsPage();
         Assert.assertTrue(projectsPage.state().isDisplayed(),"Projects page isn't open");
-
         browser.refresh();
         browser.waitForPageToLoad();
         Assert.assertEquals(projectsPage.getFooterVariantNumberLocator(),testDataFile.getValue("/expectedFooterVariantNumber").toString(),"The variant don't match");
 
         //step3
-
-
-        projectsPage.listGroupForm=new ListGroupForm();
-
-  /*
-        projectsPage.listGroupForm.goToProjectPage(projectsPage.linkToProjectNexagePageLocator);
+        projectsPage.goToProjectPage("Nexage");
         browser.waitForPageToLoad();
 
+        ProjectPage pageNexageProject=new ProjectPage("Nexage","Nexage Project");
+        Assert.assertTrue(pageNexageProject.state().isDisplayed(),"NexagePage isn't displayed");
 
-        PageOfAProject pageOfNexageProject=new PageOfAProject("NexageProject");
-        Assert.assertTrue(pageOfNexageProject.state().isDisplayed(),"NexagePage isn't displayed");
+        List<String> testsName=pageNexageProject.getTestNameFromTable();
+        List<String> testsTime=pageNexageProject.getTestStartTimeFromTable();
+        Assert.assertTrue(checkSortingDate(testsTime),"Tests are not sorted in descending order of dates");
 
+        JSONArray jsonArray=APIUtils.getTestsListJsonFormat(configFile.getValue("/nexageProjectId").toString());
+        Assert.assertTrue(compareTestsName(jsonArray,testsName),"Tests names don't match");
 
-        List<String> testsName=pageOfNexageProject.getTestNameFromTable();
-        Assert.assertTrue(pageOfNexageProject.getTestStartTimeAndCheckSortTime(),"Tests are not sorted in descending order of dates");
-        JSONArray jsonArray=ApiUtils.getTestsListJsonFormat(configFile.getValue("/nexageProjectId").toString());
-
-        Assert.assertTrue(compareTestsDataName(jsonArray,testsName),"Tests names don't match");
 
         //step4
-
-        pageOfNexageProject.backToProjectsPage();
+        pageNexageProject.backToProjectsPage();
         browser.waitForPageToLoad();
-            */
-
-        projectsPage.addNewProjectToList();
+        /////
+        projectsPage.clickAddNewProjectToListBtn();
+        projectsPage.newProjectForm=new AddNewProjectForm();
         browser.getDriver().switchTo().frame(0);
-
-        projectsPage.newProjectForm=new AddNewProjectForm("new project");
-
         projectsPage.newProjectForm.setProjectName(testDataFile.getValue("/newProjectName").toString());
         projectsPage.newProjectForm.saveNewProject();
 
         Assert.assertTrue(projectsPage.newProjectForm.checkSuccessSave(testDataFile.getValue("/newProjectName").toString()),"the project was not saved");
-
         browser.getDriver().switchTo().defaultContent();
         browser.executeScript("$('#addProject').modal('hide');");
-
         projectsPage.newProjectForm.state().waitForNotDisplayed();
         Assert.assertFalse(projectsPage.newProjectForm.state().isDisplayed(),"Add new project isn'r closed");
         browser.refresh();
-
         Assert.assertTrue(projectsPage.checkNewProjectAtList(testDataFile.getValue("/newProjectName").toString()),testDataFile.getValue("/newProjectName")+"test not added");
 
 
         //step5
 
-        //переход на страницу моего проекта
-        projectsPage.listGroupForm.goToProjectPage(projectsPage.linkToNewProjectLocator);
+        projectsPage.goToProjectPage(testDataFile.getValue("/newProjectName").toString());
         browser.waitForPageToLoad();
 
-        //проверка что страница открылась
-        MyProjectPage pageOfMyProject=new MyProjectPage("MyProject");
-        //Добавляем тест через БД
-        DataBaseRequest.doSqlRequest();
+        ProjectPage myProjectPage=new ProjectPage(testDataFile.getValue("/newProjectName").toString(),testDataFile.getValue("/newProjectName").toString()+"Page");
 
-        Assert.assertTrue(pageOfMyProject.state().waitForDisplayed(),"MyProject isn't displayed");
-        Assert.assertTrue(pageOfMyProject.isNewTestExist(),"new test ins't exist");
-        pageOfMyProject.goToTestPage();
-        pageOfMyProject.testPage=new TestPage("MyProject Test Page");
-        Assert.assertTrue(pageOfMyProject.testPage.state().isDisplayed());
+        DataBaseRequest.doSqlRequest(configFile,testDataFile,browser.getScreenshot());
 
-        Assert.assertEquals(pageOfMyProject.testPage.getProjectName(),testDataFile.getValue("/newProjectName"),"Name prject don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getTestName(),testDataFile.getValue("/testName"),"Test name don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getTestMethodName(),testDataFile.getValue("/testMethodName"),"Test method name don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getStatus(),testDataFile.getValue("/statusTest"),"Test status don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getStartTime(),"Start time: "+testDataFile.getValue("/startTime"),"Start time test don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getEndTime(),"End time: "+testDataFile.getValue("/endTime"),"End time test don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getEnvironment(),testDataFile.getValue("/environment"),"Environment don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getBrowser(),testDataFile.getValue("/browser"),"Test browser don't match");
-        Assert.assertEquals(pageOfMyProject.testPage.getAttachmentType(),testDataFile.getValue("/attachmentType"),"attachment type don't match");
-        Assert.assertTrue(pageOfMyProject.testPage.checkLog("src/test/resources/file.log"),"log data don't match");
+        Assert.assertTrue(myProjectPage.state().waitForDisplayed(),"MyProject isn't displayed");
+        Assert.assertTrue(myProjectPage.isNewTestExist(),"new test ins't exist");
 
-        String imgHref=pageOfMyProject.testPage.downloadImg();
-        browser.goTo(imgHref);
+        //step6
+        myProjectPage.goToTestPage();
+        myProjectPage.testPage=new TestPage(testDataFile.getValue("/newProjectName").toString()+"test Page");
+        Assert.assertTrue(myProjectPage.testPage.state().isDisplayed());
+
+
+        Assert.assertEquals(myProjectPage.testPage.getProjectName(),testDataFile.getValue("/newProjectName"),"Name prject don't match");
+        Assert.assertEquals(myProjectPage.testPage.getTestName(),testDataFile.getValue("/testName"),"Test name don't match");
+        Assert.assertEquals(myProjectPage.testPage.getTestMethodName(),testDataFile.getValue("/testMethodName"),"Test method name don't match");
+        Assert.assertEquals(myProjectPage.testPage.getStatus(),testDataFile.getValue("/statusTest"),"Test status don't match");
+        Assert.assertEquals(myProjectPage.testPage.getStartTime(),"Start time: "+testDataFile.getValue("/startTime"),"Start time test don't match");
+        Assert.assertEquals(myProjectPage.testPage.getEndTime(),"End time: "+testDataFile.getValue("/endTime"),"End time test don't match");
+        Assert.assertEquals(myProjectPage.testPage.getEnvironment(),testDataFile.getValue("/environment"),"Environment don't match");
+        Assert.assertEquals(myProjectPage.testPage.getBrowser(),testDataFile.getValue("/browser"),"Test browser don't match");
+        Assert.assertEquals(myProjectPage.testPage.getAttachmentType(),testDataFile.getValue("/attachmentType"),"attachment type don't match");
+        Assert.assertEquals(myProjectPage.testPage.getLogInfo(),converteDataFileToProjectLogFormat(testDataFile.getValue("/logFile").toString()),"log data don't match");
+
+        String screenHref=myProjectPage.testPage.downloadImg();
+        browser.goTo(screenHref);
         browser.waitForPageToLoad();
-
         saveImgFromBrowserPage(testDataFile.getValue("/saveImgAbsPath").toString());
-        Assert.assertTrue(compareImgs(testDataFile.getValue("/firstImgPath").toString(),testDataFile.getValue("/secondImgPath").toString()),"Images don't match");
-
-
-
+        Assert.assertTrue(compareFiles(testDataFile.getValue("/firstImgPath").toString(),testDataFile.getValue("/secondImgPath").toString()),"Images don't match");
 
 
     }
+
+
     @AfterTest
-    public void closeB(){
+    public static void closeBrowser(){
         AqualityServices.getBrowser().quit();
     }
+
 
 }

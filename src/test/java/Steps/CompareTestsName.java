@@ -4,9 +4,9 @@ import org.json.JSONArray;
 
 import java.util.List;
 
-public class Steps {
+public class CompareTestsName {
 
-    public static boolean compareTestsDataName(JSONArray testsJsonArray, List<String> testsNameList){
+    public static boolean compareTestsName(JSONArray testsJsonArray, List<String> testsNameList){
 
         for(int i=0;i<testsNameList.size();i++){
             int flag=0;
@@ -20,9 +20,6 @@ public class Steps {
         }
         return true;
     }
-
-
-
 
 
 }

@@ -1,0 +1,38 @@
+ Running TestSuite
+2020-11-09 13:34:12 DEBUG - Get connection for route {}->http://192.168.99.100:8080
+2020-11-09 13:34:12 DEBUG - Connecting to 192.168.99.100:8080
+2020-11-09 13:34:12 DEBUG - CookieSpec selected: ignoreCookies
+2020-11-09 13:34:12 DEBUG - Auth cache not set in the context
+2020-11-09 13:34:12 DEBUG - Target auth state: UNCHALLENGED
+2020-11-09 13:34:12 DEBUG - Proxy auth state: UNCHALLENGED
+2020-11-09 13:34:12 DEBUG - Attempt 1 to execute request
+2020-11-09 13:34:12 DEBUG - Sending request: POST /api/token/get HTTP/1.1
+2020-11-09 13:34:12 DEBUG -  >> "POST /api/token/get HTTP/1.1[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "Accept: */*[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "Content-Length: 9[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "Host: 192.168.99.100:8080[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "Connection: Keep-Alive[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "User-Agent: Apache-HttpClient/4.5.5 (Java/1.8.0_261)[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  >> "[\r][\n]"
+2020-11-09 13:34:12 DEBUG - >> POST /api/token/get HTTP/1.1
+2020-11-09 13:34:12 DEBUG - >> Accept: */*
+2020-11-09 13:34:12 DEBUG - >> Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1
+2020-11-09 13:34:12 DEBUG - >> Content-Length: 9
+2020-11-09 13:34:12 DEBUG - >> Host: 192.168.99.100:8080
+2020-11-09 13:34:12 DEBUG - >> Connection: Keep-Alive
+2020-11-09 13:34:12 DEBUG - >> User-Agent: Apache-HttpClient/4.5.5 (Java/1.8.0_261)
+2020-11-09 13:34:12 DEBUG - >> Accept-Encoding: gzip,deflate
+2020-11-09 13:34:12 DEBUG -  >> "variant=1"
+2020-11-09 13:34:12 DEBUG -  << "HTTP/1.1 200 OK[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  << "Server: Apache-Coyote/1.1[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  << "Content-Type: text/plain;charset=ISO-8859-1[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  << "Content-Length: 32[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  << "Date: Mon, 09 Nov 2020 10:34:12 GMT[\r][\n]"
+2020-11-09 13:34:12 DEBUG -  << "[\r][\n]"
+2020-11-09 13:34:12 DEBUG - Receiving response: HTTP/1.1 200 OK
+2020-11-09 13:34:12 DEBUG - << HTTP/1.1 200 OK
+2020-11-09 13:34:12 DEBUG - << Server: Apache-Coyote/1.1
+2020-11-09 13:34:12 DEBUG - << Content-Type: text/plain;charset=ISO-8859-1
+2020-11-09 13:34:12 DEBUG - << Content-Length: 32

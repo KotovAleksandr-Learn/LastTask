@@ -6,22 +6,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DataBaseConnection {
-    public static final String USERNAME="login";
-    public static final String PASSWORD="password";
-    public static final String URL="jdbc:mysql://192.168.99.100:3306/union_reporting";
+
+
     public static Statement statement;
     public static Connection connection;
 
-    static {
+    public static void createConnection(String url,String userName, String password){
         try {
-            connection= DriverManager.getConnection(URL,USERNAME,PASSWORD);
+            connection= DriverManager.getConnection(url,userName,password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-    }
-
-    static {
         try {
             statement=connection.createStatement();
         } catch (SQLException e) {
@@ -29,8 +25,6 @@ public class DataBaseConnection {
         }
 
     }
-
-
 
 
 
