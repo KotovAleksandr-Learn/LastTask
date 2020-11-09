@@ -7,5 +7,10 @@
   "startTime": "2020-11-08 17:09:11.0",
   "endTime": "2020-11-08 17:10:11.0",
   "environment": "KOTOV",
-  "browser": "chrome"
+  "browser": "chrome",
+  "attachmentType": "image/png",
+  "saveImgAbsPath": "C:\\Users\\aleks\\IdeaProjects\\LastTask\\src\\test\\resources\\screenshotFromSite.png",
+  "firstImgPath":"src/test/resources/screenshot.png",
+  "secondImgPath": "src/test/resources/screenshotFromSite.png"
+
 }

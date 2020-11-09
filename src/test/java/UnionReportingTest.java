@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,13 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static PagesAndForm.TestPage.compareImgs;
+import static PagesAndForm.TestPage.saveImgFromBrowserPage;
 import static Steps.Steps.compareTestsDataName;
 
 public class UnionReportingTest {
 
 
     @Test
-    public static void unionReportingTest() throws IOException, SQLException, ClassNotFoundException {
+    public static void unionReportingTest() throws IOException, SQLException, ClassNotFoundException, AWTException {
 
         ISettingsFile configFile=new JsonSettingsFile("config.json");
         ISettingsFile testDataFile=new JsonSettingsFile("testData.json");
@@ -111,11 +114,29 @@ public class UnionReportingTest {
         Assert.assertTrue(pageOfMyProject.testPage.state().isDisplayed());
 
         Assert.assertEquals(pageOfMyProject.testPage.getProjectName(),testDataFile.getValue("/newProjectName"),"Name prject don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getTestName(),testDataFile.getValue("/testName"),"Test name don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getTestMethodName(),testDataFile.getValue("/testMethodName"),"Test method name don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getStatus(),testDataFile.getValue("/statusTest"),"Test status don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getStartTime(),"Start time: "+testDataFile.getValue("/startTime"),"Start time test don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getEndTime(),"End time: "+testDataFile.getValue("/endTime"),"End time test don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getEnvironment(),testDataFile.getValue("/environment"),"Environment don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getBrowser(),testDataFile.getValue("/browser"),"Test browser don't match");
+        Assert.assertEquals(pageOfMyProject.testPage.getAttachmentType(),testDataFile.getValue("/attachmentType"),"attachment type don't match");
+        Assert.assertTrue(pageOfMyProject.testPage.checkLog("src/test/resources/file.log"),"log data don't match");
+
+        String imgHref=pageOfMyProject.testPage.downloadImg();
+        browser.goTo(imgHref);
+        browser.waitForPageToLoad();
+
+        saveImgFromBrowserPage(testDataFile.getValue("/saveImgAbsPath").toString());
+        Assert.assertTrue(compareImgs(testDataFile.getValue("/firstImgPath").toString(),testDataFile.getValue("/secondImgPath").toString()),"Images don't match");
+
+
 
 
 
     }
-   // @AfterTest
+    @AfterTest
     public void closeB(){
         AqualityServices.getBrowser().quit();
     }
