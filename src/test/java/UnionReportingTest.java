@@ -1,7 +1,5 @@
-import PagesAndForm.AddNewProjectForm;
-import PagesAndForm.ListGroupForm;
-import PagesAndForm.PageOfAProject;
-import PagesAndForm.ProjectsPage;
+import DataBaseUtils.DataBaseRequest;
+import PagesAndForm.*;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.core.utilities.ISettingsFile;
@@ -15,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +24,7 @@ public class UnionReportingTest {
 
 
     @Test
-    public static void unionReportingTest() throws IOException {
+    public static void unionReportingTest() throws IOException, SQLException, ClassNotFoundException {
 
         ISettingsFile configFile=new JsonSettingsFile("config.json");
         ISettingsFile testDataFile=new JsonSettingsFile("testData.json");
@@ -49,9 +48,11 @@ public class UnionReportingTest {
         Assert.assertEquals(projectsPage.getFooterVariantNumberLocator(),testDataFile.getValue("/expectedFooterVariantNumber").toString(),"The variant don't match");
 
         //step3
-/*
+
 
         projectsPage.listGroupForm=new ListGroupForm();
+
+  /*
         projectsPage.listGroupForm.goToProjectPage(projectsPage.linkToProjectNexagePageLocator);
         browser.waitForPageToLoad();
 
@@ -70,7 +71,7 @@ public class UnionReportingTest {
 
         pageOfNexageProject.backToProjectsPage();
         browser.waitForPageToLoad();
-*/
+            */
 
         projectsPage.addNewProjectToList();
         browser.getDriver().switchTo().frame(0);
@@ -89,12 +90,32 @@ public class UnionReportingTest {
         Assert.assertFalse(projectsPage.newProjectForm.state().isDisplayed(),"Add new project isn'r closed");
         browser.refresh();
 
-        Assert.assertTrue(projectsPage.checkNewProjectAtList(testDataFile.getValue("/newProjectName").toString()));
+        Assert.assertTrue(projectsPage.checkNewProjectAtList(testDataFile.getValue("/newProjectName").toString()),testDataFile.getValue("/newProjectName")+"test not added");
+
+
+        //step5
+
+        //переход на страницу моего проекта
+        projectsPage.listGroupForm.goToProjectPage(projectsPage.linkToNewProjectLocator);
+        browser.waitForPageToLoad();
+
+        //проверка что страница открылась
+        MyProjectPage pageOfMyProject=new MyProjectPage("MyProject");
+        //Добавляем тест через БД
+        DataBaseRequest.doSqlRequest();
+
+        Assert.assertTrue(pageOfMyProject.state().waitForDisplayed(),"MyProject isn't displayed");
+        Assert.assertTrue(pageOfMyProject.isNewTestExist(),"new test ins't exist");
+        pageOfMyProject.goToTestPage();
+        pageOfMyProject.testPage=new TestPage("MyProject Test Page");
+        Assert.assertTrue(pageOfMyProject.testPage.state().isDisplayed());
+
+        Assert.assertEquals(pageOfMyProject.testPage.getProjectName(),testDataFile.getValue("/newProjectName"),"Name prject don't match");
 
 
 
     }
-    @AfterTest
+   // @AfterTest
     public void closeB(){
         AqualityServices.getBrowser().quit();
     }

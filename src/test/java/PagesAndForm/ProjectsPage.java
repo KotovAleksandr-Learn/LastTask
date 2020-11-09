@@ -18,6 +18,9 @@ public class ProjectsPage extends Form {
     public String newProjectLinkLocator="//div[@class='list-group']//a[(text())='";
 
 
+    public String linkToNewProjectLocator="//a[contains(text(),'MyProject')]";
+
+
     public ListGroupForm listGroupForm;
     public AddNewProjectForm newProjectForm;
 

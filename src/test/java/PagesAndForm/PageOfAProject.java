@@ -14,6 +14,7 @@ import java.util.List;
 
 public class PageOfAProject extends Form {
     public PageOfAProject(String name) {
+        //локатор надо поменять
         super(By.xpath("//div[contains(@class,'panel-heading')and contains(text(),'Total tests progress')]"),name);
     }
 
@@ -51,12 +52,6 @@ public class PageOfAProject extends Form {
         backToProjectsPageLink.click();
 
     }
-
-
-
-
-
-
 
 
 

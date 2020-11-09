@@ -1,5 +1,11 @@
 {
   "expectedFooterVariantNumber": "Version: 1",
-  "newProjectName": "Kotov19.13"
-
+  "newProjectName": "MyProject",
+  "testName": "Check authorization form with correct login/password",
+  "testMethodName": "checkAuthFormCorrectLoginPassworTest",
+  "statusTest": "Passed",
+  "startTime": "2020-11-08 17:09:11.0",
+  "endTime": "2020-11-08 17:10:11.0",
+  "environment": "KOTOV",
+  "browser": "chrome"
 }
