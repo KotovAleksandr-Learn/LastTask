@@ -105,8 +105,6 @@
                     <version>3.8.1</version>
                     <configuration>
                         <encoding>UTF-8</encoding>
-                        <source>10</source>
-                        <target>10</target>
                     </configuration>
                 </plugin>
 
