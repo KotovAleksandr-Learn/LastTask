@@ -13,8 +13,8 @@
   "sessionId": "20",
   "logFile": "src/test/resources/file.log",
   "isException": "1",
-  "saveImgAbsPath": "C:\\Users\\aleks\\IdeaProjects\\LastTask\\src\\test\\resources\\screenshotFromSite.png",
+  "saveImgAbsPath": "C:\\Users\\aleks\\Downloads\\screenshotFromSite.png",
   "firstImgPath":"src/test/resources/screenshot.png",
-  "secondImgPath": "src/test/resources/screenshotFromSite.png"
+  "secondImgPath": "C:\\Users\\aleks\\Downloads\\screenshotFromSite.png"
 
 }

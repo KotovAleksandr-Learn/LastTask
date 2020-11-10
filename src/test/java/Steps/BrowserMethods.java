@@ -18,6 +18,7 @@ public class BrowserMethods {
 
 
     public static void saveImgFromBrowserPage(String filePath) throws AWTException {
+
         Robot robot= new Robot();
         robot.setAutoDelay(1000);
         robot.keyPress(KeyEvent.VK_CONTROL);

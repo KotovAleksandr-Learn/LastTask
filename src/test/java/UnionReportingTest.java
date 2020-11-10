@@ -56,7 +56,7 @@ public class UnionReportingTest {
         Assert.assertEquals(projectsPage.getFooterVariantNumberLocator(),testDataFile.getValue("/expectedFooterVariantNumber").toString(),"The variant don't match");
 
         //step3
-        projectsPage.goToProjectPage("Nexage");
+       /* projectsPage.goToProjectPage("Nexage");
         browser.waitForPageToLoad();
 
         ProjectPage pageNexageProject=new ProjectPage("Nexage","Nexage Project");
@@ -72,7 +72,7 @@ public class UnionReportingTest {
 
         //step4
         pageNexageProject.backToProjectsPage();
-        browser.waitForPageToLoad();
+        browser.waitForPageToLoad();*/
         /////
         projectsPage.clickAddNewProjectToListBtn();
         projectsPage.newProjectForm=new AddNewProjectForm();
