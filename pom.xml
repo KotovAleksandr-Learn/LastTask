@@ -84,6 +84,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.11</version>
         </dependency>
+
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
@@ -125,13 +126,15 @@
                         <systemPropertyVariables>
                             <!-- Путь к xml-файлу и аллюр-аттачментам -->
                             <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+
                         </systemPropertyVariables>
 
 
-                        <suiteXmlFiles>
-                            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                        </suiteXmlFiles>
-                    </configuration>
+                        </configuration>
+
                     <dependencies>
                         <dependency>
                             <groupId>org.aspectj</groupId>
