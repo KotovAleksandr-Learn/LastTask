@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 import java.util.List;
 
 import java.awt.*;
@@ -60,6 +62,7 @@ public class UnionReportingTest {
         browser.waitForPageToLoad();
 
         ProjectPage pageNexageProject=new ProjectPage("Nexage","Nexage Project");
+        pageNexageProject.state().waitForDisplayed(Duration.ofSeconds(50));
         Assert.assertTrue(pageNexageProject.state().isDisplayed(),"NexagePage isn't displayed");
 
         List<String> testsName=pageNexageProject.getTestNameFromTable();
