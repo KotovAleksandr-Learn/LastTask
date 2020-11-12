@@ -6,5 +6,6 @@
   "dataBaseUrl": "jdbc:mysql://192.168.99.100:3306/union_reporting",
   "dataBaseLogin": "login",
   "dataBasePassword": "password",
-  "dataBaseDriver": "com.mysql.cj.jdbc.Driver"
+  "dataBaseDriver": "com.mysql.cj.jdbc.Driver",
+  "durationOfSeconds": "50"
 }

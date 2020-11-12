@@ -15,8 +15,6 @@ import static DataBaseUtils.DataBaseConnection.createConnection;
 public class DataBaseRequest {
     public static void doSqlRequest(ISettingsFile configFile, ISettingsFile testDataFile,byte[]screenFile) throws SQLException, ClassNotFoundException, IOException {
 
-        //ISettingsFile configFile=new JsonSettingsFile(configFilePath);
-        //ISettingsFile testDataFile=new JsonSettingsFile(dataTestFilePath);
 
         createConnection(configFile.getValue("/dataBaseUrl").toString(),configFile.getValue("/dataBaseLogin").toString(),configFile.getValue("/dataBasePassword").toString());
 
@@ -59,7 +57,6 @@ public class DataBaseRequest {
         PreparedStatement insertAttach= DataBaseConnection.connection.prepareStatement(addAttachSql);
 
         FileOutputStream fos=new FileOutputStream(new File(testDataFile.getValue("/firstImgPath").toString()));
-        //fos.write(AqualityServices.getBrowser().getScreenshot());
         fos.write(screenFile);
         fos.close();
         File attachFile=new File(testDataFile.getValue("/firstImgPath").toString());

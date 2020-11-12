@@ -30,7 +30,7 @@ public class APIUtils {
                 given().params(requestParameters).
                         when().post(APIEndPoints.GET_LIST_TESTS_JSON_POINT).
                         then().statusCode(HttpStatus.SC_OK).extract().response();
-
+        System.out.println(response.body().asString());
         return new JSONArray(response.body().asString());
     }
 

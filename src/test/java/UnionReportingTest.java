@@ -16,17 +16,13 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.List;
 
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
 import static Steps.BrowserMethods.saveImgFromBrowserPage;
-import static Steps.CompareFiles.compareFiles;
-import static Steps.CompareTestsName.compareTestsName;
-import static Steps.Utils.checkSortingDate;
-import static Steps.Utils.converteDataFileToProjectLogFormat;
+import static Steps.Utils.*;
 
 public class UnionReportingTest {
 
@@ -62,16 +58,14 @@ public class UnionReportingTest {
         browser.waitForPageToLoad();
 
         ProjectPage pageNexageProject=new ProjectPage("Nexage","Nexage Project");
-        pageNexageProject.state().waitForDisplayed(Duration.ofSeconds(50));
+        pageNexageProject.state().waitForDisplayed(Duration.ofSeconds(Integer.valueOf(configFile.getValue("/durationOfSeconds").toString())));
         Assert.assertTrue(pageNexageProject.state().isDisplayed(),"NexagePage isn't displayed");
 
-        List<String> testsName=pageNexageProject.getTestNameFromTable();
-        List<String> testsTime=pageNexageProject.getTestStartTimeFromTable();
-        Assert.assertTrue(checkSortingDate(testsTime),"Tests are not sorted in descending order of dates");
+        JSONArray webJsonArray=pageNexageProject.getTestInfo();
+        Assert.assertTrue(checkSortingDateJson(webJsonArray),"Tests are not sorted in descending order of dates");
 
-        JSONArray jsonArray=APIUtils.getTestsListJsonFormat(configFile.getValue("/nexageProjectId").toString());
-        Assert.assertTrue(compareTestsName(jsonArray,testsName),"Tests names don't match");
-
+        JSONArray apiJsonArray=APIUtils.getTestsListJsonFormat(configFile.getValue("/nexageProjectId").toString());
+        Assert.assertTrue(compareDataTest(webJsonArray,apiJsonArray),"test data don't match");
 
         //step4
         pageNexageProject.backToProjectsPage();
@@ -102,10 +96,10 @@ public class UnionReportingTest {
         DataBaseRequest.doSqlRequest(configFile,testDataFile,browser.getScreenshot());
 
         Assert.assertTrue(myProjectPage.state().waitForDisplayed(),"MyProject isn't displayed");
-        Assert.assertTrue(myProjectPage.isNewTestExist(),"new test ins't exist");
+        Assert.assertTrue(myProjectPage.isNewTestExist(testDataFile.getValue("/testName").toString()),"new test ins't exist");
 
         //step6
-        myProjectPage.goToTestPage();
+        myProjectPage.goToTestPage(testDataFile.getValue("/testName").toString());
         myProjectPage.testPage=new TestPage(testDataFile.getValue("/newProjectName").toString()+"test Page");
         Assert.assertTrue(myProjectPage.testPage.state().isDisplayed());
 
@@ -126,7 +120,6 @@ public class UnionReportingTest {
         browser.waitForPageToLoad();
         saveImgFromBrowserPage(testDataFile.getValue("/saveImgAbsPath").toString());
         Assert.assertTrue(compareFiles(testDataFile.getValue("/firstImgPath").toString(),testDataFile.getValue("/secondImgPath").toString()),"Images don't match");
-
 
     }
 
