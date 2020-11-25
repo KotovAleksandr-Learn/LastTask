@@ -1,0 +1,13 @@
+{
+  "numVariant": "1",
+  "variant": "variant1",
+  "nexageProjectId":"1",
+  "baseApiUrl": "http://192.168.99.100:8080/api",
+  "url": "http://login:password@192.168.99.100:8080/web/",
+  "dataBaseUrl": "jdbc:mysql://192.168.99.100:3306/union_reporting",
+  "dataBaseLogin": "login",
+  "dataBasePassword": "password",
+  "dataBaseDriver": "com.mysql.cj.jdbc.Driver",
+  "durationOfSeconds": "50",
+  "closeNewProjectFormScriptFilePath": "src/test/resources/closePopUp.js"
+}
