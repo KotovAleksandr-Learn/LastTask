@@ -11,10 +11,19 @@
   "browser": "chrome",
   "attachmentType": "image/png",
   "sessionId": "20",
-  "logFile": "src/test/resources/file.log",
-  "isException": "1",
-  "saveImgAbsPath": "C:\\Users\\aleks\\Downloads\\screenshotFromSite.png",
-  "firstImgPath":"src/test/resources/screenshot.png",
-  "secondImgPath": "C:\\Users\\aleks\\Downloads\\screenshotFromSite.png"
+  "logFile": "target/log/log.log",
+  "isException": "0",
+  "firstImageName":"screenshot.png",
+  "secondImageName": "screenshotFromSite.png",
+  "imgsDirectory": "\\src\\test\\resources\\",
+  "credFilePath": "credentionals.json",
+  "testRailUrl": "https://tr.a1qa.com/",
+  "testRailProjectId": 140,
+  "testRailSuiteId":18234,
+  "testRailTestName": "Kotov A. Final Task",
+  "testRailDescription": "Final Task, Kotov",
+  "testRailScreenshotName": "testRailScreenshot.png"
+
+
 
 }

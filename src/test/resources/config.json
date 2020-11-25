@@ -1,4 +1,5 @@
 {
+  "numVariant": "1",
   "variant": "variant1",
   "nexageProjectId":"1",
   "baseApiUrl": "http://192.168.99.100:8080/api",
@@ -7,5 +8,6 @@
   "dataBaseLogin": "login",
   "dataBasePassword": "password",
   "dataBaseDriver": "com.mysql.cj.jdbc.Driver",
-  "durationOfSeconds": "50"
+  "durationOfSeconds": "50",
+  "closeNewProjectFormScriptFilePath": "src/test/resources/closePopUp.js"
 }
